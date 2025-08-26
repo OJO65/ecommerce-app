@@ -7,6 +7,8 @@ import {
   user,
   updateProfile,
   sendPasswordResetEmail,
+  signInWithPopup,
+  GoogleAuthProvider,
 } from '@angular/fire/auth';
 import {
   Firestore,
@@ -135,6 +137,39 @@ export class AuthService implements OnDestroy {
       return userData;
     } catch (error: any) {
       console.error('Login error:', error);
+      throw new Error(this.getErrorMessage(error));
+    }
+  }
+
+    async signInWithGoogle(): Promise<User> {
+    try {
+      const provider = new GoogleAuthProvider();
+      const credential = await signInWithPopup(this.auth, provider);
+
+      if (!credential.user) throw new Error('Google sign-in failed');
+
+      // Check if user already exists in Firestore
+      let userData = await this.getUserData(credential.user.uid);
+
+      // If user doesn't exist, create their document
+      if (!userData) {
+        userData = {
+          uid: credential.user.uid,
+          email: credential.user.email || '',
+          displayName: credential.user.displayName || 'User',
+          role: 'customer',
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+          photoURL: credential.user.photoURL || undefined,
+        };
+
+        await setDoc(doc(this.firestore, `users/${credential.user.uid}`), userData);
+      }
+
+      this.currentUserSubject.next(userData);
+      return userData;
+    } catch (error: any) {
+      console.error('Google sign-in error:', error);
       throw new Error(this.getErrorMessage(error));
     }
   }
