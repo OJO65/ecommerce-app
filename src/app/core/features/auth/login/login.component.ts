@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +24,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
+    MatDividerModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
@@ -30,6 +32,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 export class LoginComponent {
   loginForm: FormGroup;
   isLoading = false;
+  isGoogleLoading = false;
   hidePassword = true;
   errorMessage = '';
 
@@ -54,6 +57,20 @@ export class LoginComponent {
       } finally {
         this.isLoading = false;
       }
+    }
+  }
+
+    async signInWithGoogle() {
+    this.isGoogleLoading = true;
+    this.errorMessage = '';
+
+    try {
+      await this.authService.signInWithGoogle();
+      this.router.navigate(['/']);
+    } catch (error: any) {
+      this.errorMessage = this.getErrorMessage(error);
+    } finally {
+      this.isGoogleLoading = false;
     }
   }
 
