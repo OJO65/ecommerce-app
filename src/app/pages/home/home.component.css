@@ -23,16 +23,19 @@
 }
 
 .hero-text h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 20px;
+  font-size: 6.8rem;
+  font-weight: bold;
+  margin-bottom: 50px;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: "Explora", serif;
+  color: #292bb8;
 }
 
 .hero-text p {
-  font-size: 1.25rem;
-  color: #4a5568; /* medium gray */
+  font-size: 1.7rem;
+  color: #c2cee2; /* medium gray */
   margin-bottom: 2rem;
+  font-family: "Poiret One", sans-serif;
 }
 
 .shop-btn {
@@ -45,6 +48,7 @@
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.3s ease;
+  font-family: "Poiret One", sans-serif;
 }
 
 .shop-btn:hover {
