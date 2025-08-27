@@ -1,0 +1,31 @@
+<div class="shop-container">
+  <h1 class="shop-title">🛍️ Our Products</h1>
+
+  <div class="product-grid">
+    <mat-card class="product-card" *ngFor="let product of products$ | async">
+      <img mat-card-image [src]="product.imageUrl || '/assets/placeholder.png'" alt="{{product.name}}" />
+
+      <mat-card-content class="product-details">
+        <h2>{{ product.name }}</h2>
+        <p class="price">KSh {{ product.price }}</p>
+      </mat-card-content>
+
+      
+      <div class="cart-actions">
+        <button
+          (click)="addToCart(product)"
+          class="cart-btn"
+        >
+          +
+        </button>
+
+        <button
+          (click)="removeFromCart(product)"
+          class="cart-btn"
+        >
+          -
+        </button>
+      </div>
+    </mat-card>
+  </div>
+</div>
