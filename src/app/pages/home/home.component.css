@@ -24,11 +24,11 @@
 
 .hero-text h1 {
   font-size: 6.8rem;
-  font-weight: bold;
+  font-weight: lighter;
   margin-bottom: 50px;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-family: "Explora", serif;
-  color: #292bb8;
+  color: #4338ca;
 }
 
 .hero-text p {
