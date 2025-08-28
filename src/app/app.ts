@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet, Router } from '@angular/router';
-import { HeaderComponent } from "./components/header/header/header.component";
+import { HeaderComponent } from "./components/header/header.component";
 import { CommonModule } from '@angular/common';
 
 @Component({

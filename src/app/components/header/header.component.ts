@@ -5,8 +5,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { AuthService } from '../../../services/auth.service';
-import { CartService } from '../../../services/cart.service';
+import { AuthService } from '../../services/auth.service';
+import { CartService } from '../../services/cart.service';
 import { MatBadgeModule } from '@angular/material/badge';
 
 @Component({
