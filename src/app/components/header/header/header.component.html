@@ -1,0 +1,32 @@
+<mat-toolbar color="primary" class="header-toolbar">
+  <!-- Logo / Title -->
+  <div class="logo">
+    <img src="undraw_shopping-bags_nfsf.svg" alt="" routerLink="/" />
+  </div>
+
+  <span class="spacer"></span>
+
+  <!-- Account Menu -->
+  <button mat-button [matMenuTriggerFor]="accountMenu" *ngIf="!isLoggedIn; else loggedInMenu">
+    Account
+  </button>
+
+  <ng-template #loggedInMenu>
+    <button mat-button [matMenuTriggerFor]="accountMenu">
+      Hi, {{ username }}<mat-icon>expand_more</mat-icon>
+    </button>
+  </ng-template>
+
+  <mat-menu #accountMenu="matMenu">
+    <button mat-menu-item routerLink="/register" *ngIf="!isLoggedIn">Sign Up</button>
+    <button mat-menu-item routerLink="/my-account" *ngIf="isLoggedIn">My Account</button>
+    <button mat-menu-item routerLink="/orders" *ngIf="isLoggedIn">Orders</button>
+    <button mat-menu-item routerLink="/wishlist" *ngIf="isLoggedIn">Wishlist</button>
+    <button mat-menu-item (click)="logout()" *ngIf="isLoggedIn">Logout</button>
+  </mat-menu>
+
+  <!-- Cart Icon -->
+  <button mat-icon-button routerLink="/cart" [matBadge]="cartCount" matBadgeColor="accent">
+    <mat-icon>shopping_cart</mat-icon>
+  </button>
+</mat-toolbar>
