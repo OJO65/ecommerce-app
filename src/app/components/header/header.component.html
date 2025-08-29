@@ -1,32 +1,141 @@
+<!-- Header Template - Only the toolbar -->
 <mat-toolbar color="primary" class="header-toolbar">
   <!-- Logo / Title -->
   <div class="logo">
     <img src="undraw_shopping-bags_nfsf.svg" alt="" routerLink="/" />
+
+    <!-- Mobile Menu Button (visible only on mobile) -->
+    <button mat-icon-button class="mobile-menu-btn" (click)="toggleSidebar()" *ngIf="isMobile">
+      <mat-icon>menu</mat-icon>
+    </button>
   </div>
 
   <span class="spacer"></span>
 
-  <!-- Account Menu -->
-  <button mat-button [matMenuTriggerFor]="accountMenu" *ngIf="!isLoggedIn; else loggedInMenu">
-    Account
-  </button>
-
-  <ng-template #loggedInMenu>
-    <button mat-button [matMenuTriggerFor]="accountMenu">
-      Hi, {{ username }}<mat-icon>expand_more</mat-icon>
+  <!-- Desktop Navigation (hidden on mobile) -->
+<div class="desktop-nav" *ngIf="!isMobile">
+  <div class="account-dropdown">
+    <button class="account-btn" (click)="toggleAccountDropdown()">
+      <span *ngIf="!isLoggedIn">Account</span>
+      <span *ngIf="isLoggedIn">Hi, {{ username }}</span>
+      <mat-icon>{{ accountDropdownOpen ? 'expand_less' : 'expand_more' }}</mat-icon>
     </button>
-  </ng-template>
 
-  <mat-menu #accountMenu="matMenu">
-    <button mat-menu-item routerLink="/register" *ngIf="!isLoggedIn">Sign Up</button>
-    <button mat-menu-item routerLink="/my-account" *ngIf="isLoggedIn">My Account</button>
-    <button mat-menu-item routerLink="/orders" *ngIf="isLoggedIn">Orders</button>
-    <button mat-menu-item routerLink="/wishlist" *ngIf="isLoggedIn">Wishlist</button>
-    <button mat-menu-item (click)="logout()" *ngIf="isLoggedIn">Logout</button>
-  </mat-menu>
+    <!-- Sidebar-styled dropdown -->
+    <div class="dropdown-panel" *ngIf="accountDropdownOpen">
+    
 
-  <!-- Cart Icon -->
-  <button mat-icon-button routerLink="/cart" [matBadge]="cartCount" matBadgeColor="accent">
+      <!-- Same links as sidebar -->
+      <a class="sidebar-link" routerLink="/register" *ngIf="!isLoggedIn" (click)="closeAccountDropdown()">
+        <mat-icon>person_add</mat-icon>
+        <span>Sign Up</span>
+      </a>
+
+      <a class="sidebar-link" routerLink="/my-account" *ngIf="isLoggedIn" (click)="closeAccountDropdown()">
+        <mat-icon>account_circle</mat-icon>
+        <span>My Account</span>
+      </a>
+
+      <a class="sidebar-link" routerLink="/orders" *ngIf="isLoggedIn" (click)="closeAccountDropdown()">
+        <mat-icon>receipt_long</mat-icon>
+        <span>Orders</span>
+      </a>
+
+      <a class="sidebar-link" routerLink="/wishlist" *ngIf="isLoggedIn" (click)="closeAccountDropdown()">
+        <mat-icon>favorite</mat-icon>
+        <span>Wishlist</span>
+      </a>
+
+      <button class="sidebar-link sidebar-button" (click)="logout(); closeAccountDropdown()" *ngIf="isLoggedIn">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+
+      <a class="sidebar-link" routerLink="/login" *ngIf="!isLoggedIn" (click)="closeAccountDropdown()">
+        <mat-icon>login</mat-icon>
+        <span>Login</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Cart Icon (visible on desktop only) -->
+  <button
+    mat-icon-button
+    routerLink="/cart"
+    [matBadge]="cartCount"
+    matBadgeColor="accent"
+    *ngIf="!isMobile && cartCount > 0"
+  >
     <mat-icon>shopping_cart</mat-icon>
   </button>
 </mat-toolbar>
+
+<!-- Global Mobile Sidebar - Rendered at body level -->
+<ng-container *ngIf="isMobile">
+  <!-- Overlay -->
+  <div class="mobile-sidebar-overlay" *ngIf="sidebarOpen" (click)="closeSidebar()"></div>
+
+  <!-- Sidebar -->
+  <div class="mobile-sidebar" [class.sidebar-open]="sidebarOpen">
+    <!-- Sidebar Header -->
+    <div class="sidebar-header">
+      <h3>e-kibanda</h3>
+      <button mat-icon-button (click)="closeSidebar()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar-nav">
+      <div class="user-section" *ngIf="isLoggedIn">
+        <p class="welcome-text">Hi, {{ username }}</p>
+      </div>
+
+      <!-- Cart Link - Mobile Only -->
+      <a class="sidebar-link cart-link" routerLink="/cart" (click)="closeSidebar()">
+        <mat-icon [matBadge]="cartCount" matBadgeColor="accent" [matBadgeHidden]="cartCount === 0"
+          >shopping_cart</mat-icon
+        >
+        <span>Cart</span>
+      </a>
+
+      <!-- Account Links -->
+      <a class="sidebar-link" routerLink="/register" *ngIf="!isLoggedIn" (click)="closeSidebar()">
+        <mat-icon>person_add</mat-icon>
+        <span>Sign Up</span>
+      </a>
+
+      <a class="sidebar-link" routerLink="/my-account" *ngIf="isLoggedIn" (click)="closeSidebar()">
+        <mat-icon>account_circle</mat-icon>
+        <span>My Account</span>
+      </a>
+
+      <a class="sidebar-link" routerLink="/orders" *ngIf="isLoggedIn" (click)="closeSidebar()">
+        <mat-icon>receipt_long</mat-icon>
+        <span>Orders</span>
+      </a>
+
+      <a class="sidebar-link" routerLink="/wishlist" *ngIf="isLoggedIn" (click)="closeSidebar()">
+        <mat-icon>favorite</mat-icon>
+        <span>Wishlist</span>
+      </a>
+
+      <button
+        class="sidebar-link sidebar-button"
+        (click)="logout(); closeSidebar()"
+        *ngIf="isLoggedIn"
+      >
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+
+      <!-- Login button for non-logged in users -->
+      <a class="sidebar-link" routerLink="/login" *ngIf="!isLoggedIn" (click)="closeSidebar()">
+        <mat-icon>login</mat-icon>
+        <span>Login</span>
+      </a>
+    </div>
+  </div>
+</ng-container>
